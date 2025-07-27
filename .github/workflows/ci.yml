@@ -1,0 +1,27 @@
+name: Java CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn install
+
+      - name: Run tests
+        run: mvn test
+
+      - name: Check formatting
+        run: java -jar tools/google-java-format-1.17.0-all-deps.jar --dry-run --set-exit-if-changed $(find . -type f -name "*.java")
